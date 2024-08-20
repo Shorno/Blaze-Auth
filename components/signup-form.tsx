@@ -17,6 +17,8 @@ import {
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {checkEmailAvailability, checkUsernameAvailability} from "@/helper/authHelper";
+import {useRouter} from "next/navigation";
+import {Loader} from "lucide-react";
 
 export default function SignupForm() {
 
@@ -30,13 +32,16 @@ export default function SignupForm() {
             confirmPassword: "",
         }
     });
-    const {control} = form;
+    const {control, reset, formState: {isSubmitting}} = form;
+
+    const router = useRouter()
 
 
     const email = useWatch({control, name: "email"});
     const username = useWatch({control, name: "username"});
     const [emailError, setEmailError] = useState("");
     const [usernameError, setUsernameError] = useState("");
+    const [serverError, setServerError] = useState("");
 
 
     useEffect(() => {
@@ -50,20 +55,23 @@ export default function SignupForm() {
 
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        const {username, email, password} = values
-
-
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/signup", {username, email, password,},
+            const response = await axios.post("http://localhost:5000/api/auth/signup", values,
                 {
                     headers: {
                         "Content-Type": "application/json"
                     },
                 });
             console.log(response.data);
+            if (response.status === 201) {
+                reset();
+                router.push("/login")
+
+            }
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.error("Error response:", error.response?.data);
+                setServerError(error.response?.data.message);
             } else {
                 console.error("Unexpected error:", error);
             }
@@ -137,7 +145,11 @@ export default function SignupForm() {
                                 </FormItem>
                             )}
                         />
-                        <Button className={"w-full"} type="submit">Sign Up</Button>
+                        {serverError && <FormMessage>{serverError}</FormMessage>}
+                        <Button className={"w-full"} type="submit"
+                                disabled={isSubmitting || !!emailError || !!usernameError}>
+                            {isSubmitting ? <Loader className={"animate-spin"}/> : "Sign Up"}
+                        </Button>
                     </form>
                 </Form>
             </CardContent>
