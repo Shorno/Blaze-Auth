@@ -3,7 +3,7 @@ import {Button} from "@/components/ui/button"
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {useForm, useWatch} from "react-hook-form";
 import {z} from "zod";
-import {formSchema} from "@/validation/formSchema";
+import {signupSchema} from "@/validation/signupSchema";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Input} from "@/components/ui/input";
 import {
@@ -19,12 +19,13 @@ import {useEffect, useState} from "react";
 import {checkEmailAvailability, checkUsernameAvailability} from "@/helper/authHelper";
 import {useRouter} from "next/navigation";
 import {Loader} from "lucide-react";
+import Link from "next/link";
 
 export default function SignupForm() {
 
-    const form = useForm<z.infer<typeof formSchema>>({
+    const form = useForm<z.infer<typeof signupSchema>>({
         mode: "all",
-        resolver: zodResolver(formSchema),
+        resolver: zodResolver(signupSchema),
         defaultValues: {
             email: "",
             username: "",
@@ -54,13 +55,14 @@ export default function SignupForm() {
     }, [email]);
 
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    async function onSubmit(values: z.infer<typeof signupSchema>) {
         try {
             const response = await axios.post("http://localhost:5000/api/auth/signup", values,
                 {
                     headers: {
                         "Content-Type": "application/json"
                     },
+                    withCredentials: true
                 });
             console.log(response.data);
             if (response.status === 201) {
@@ -153,7 +155,8 @@ export default function SignupForm() {
                     </form>
                 </Form>
             </CardContent>
-            <CardFooter className="flex justify-between">
+            <CardFooter className="flex justify-center gap-2">
+                Already have an account? <Link href={"/login"} className="text-blue-500 hover:underline">Login</Link>
             </CardFooter>
         </Card>
     )

@@ -1,15 +1,11 @@
-"use client"
-import SignupForm from "@/components/signup-form";
+import LoginForm from "@/components/login-form";
 
-export default function SignUpPage() {
-
+export default function LoginPage() {
     return (
         <>
             <div className={"bg-slate-700 h-[calc(100vh-64px)] flex items-center justify-center"}>
-                <SignupForm/>
+                <LoginForm/>
             </div>
         </>
     )
 }
-
-

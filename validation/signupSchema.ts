@@ -1,7 +1,6 @@
 import {z} from "zod";
-import axios from "axios";
 
-export const formSchema = z.object({
+export const signupSchema = z.object({
     email: z.string().nonempty({message: "Email is required"}).email({message: "Email address must be valid"}),
     username: z.string({required_error: "Username is required"})
         .nonempty({message: "Username is required"})
@@ -19,4 +18,9 @@ export const formSchema = z.object({
 }).refine(data => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
+});
+
+export const loginSchema = z.object({
+    email: z.string().nonempty({message: "Email is required"}).email({message: "Email address must be valid"}),
+    password: z.string().nonempty({message: "Password is required"})
 });
