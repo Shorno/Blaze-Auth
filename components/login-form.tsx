@@ -39,10 +39,10 @@ export default function LoginForm() {
     async function onSubmit(values: z.infer<typeof loginSchema>) {
         const {email, password} = values;
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/login", {email, password});
+            const response = await axios.post("http://localhost:5000/api/auth/login", {email, password}, {withCredentials: true});
             console.log("response data", response.data)
             if (response.status === 200) {
-                router.push("/")
+                router.push("/profile")
             }
         } catch (error: any) {
             setServerError(`${error.response.data.error.details} `);

@@ -7,7 +7,11 @@ export default function Navbar() {
                 Home
             </Link>
             <nav className="flex items-center gap-4">
-                <Link href={"/login"} className="text-sm font-medium text-muted-foreground hover:text-foreground" prefetch={false}>
+                <Link href={"/profile"} className="text-sm font-medium textb
+                 hover:text-foreground" prefetch={false}>
+                    Profile
+                </Link>
+                <Link href={"/login"} className="text-sm font-medium text-black hover:text-foreground" prefetch={false}>
                     Login
                 </Link>
                 <Link
