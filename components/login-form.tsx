@@ -39,10 +39,13 @@ export default function LoginForm() {
     async function onSubmit(values: z.infer<typeof loginSchema>) {
         const {email, password} = values;
         try {
-            const response = await axios.post("http://localhost:5000/api/auth/login", {email, password}, {withCredentials: true});
+            const response = await axios.post("http://localhost:5000/api/auth/login", {
+                email,
+                password
+            }, {withCredentials: true});
             console.log("response data", response.data)
             if (response.status === 200) {
-                router.push("/profile")
+                router.push("/")
             }
         } catch (error: any) {
             setServerError(`${error.response.data.error.details} `);
@@ -103,7 +106,8 @@ export default function LoginForm() {
                     </Form>
                 </CardContent>
                 <CardFooter className="flex justify-center gap-2">
-                    Don&apos;t have an account? <Link href={"/signup"} className="text-blue-500 hover:underline">Sign Up</Link>
+                    Don&apos;t have an account? <Link href={"/signup"} className="text-blue-500 hover:underline">Sign
+                    Up</Link>
                 </CardFooter>
             </Card>
 

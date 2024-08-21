@@ -10,7 +10,6 @@ export function middleware(request: NextRequest) {
     const isAuthRoute = authRoutes.includes(path)
 
     const token = request.cookies.get('token')?.value
-    console.log('token', token)
 
     if (!token && isProtectedRoute) {
         return NextResponse.redirect(new URL("/login", request.url))
